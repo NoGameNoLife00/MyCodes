@@ -1,6 +1,8 @@
 #include "Config.h"
 
 // ¹«¸æÄ£¿é
-int SendOnlineUserList(SOCKET connSocket);
+int SendOnlineUserList(PUserOnlineNode pCurrUser);
 
-int SendAllUserList(SOCKET connSocket);
+int SendAllUserList(PUserOnlineNode pCurrUser);
+
+int SendCurrentUser(PUserOnlineNode pCurrUser);

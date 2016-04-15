@@ -1,3 +1,6 @@
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
 #include "BaseData.h"
 
 #define CONFIG_FILE "config.txt"
@@ -6,21 +9,20 @@
 #define INPUT_BUFLEN   1024
 #define KEY            23
 
+
 typedef struct _UserDataNode
 {
-	char userName[USER_NAME_LEN];
-	char userPwd[USER_PWD_LEN];
-	int  userLevel;				 // 用户权限
+	PUserData userData;
 	_UserDataNode *pNext;
 }UserDataNode, *PUserDataNode;
 
 typedef struct _UserOnlineNode
 {
-	PUserDataNode userData;
+	PUserData userData;
 	SOCKET userSocket;
 	_UserOnlineNode *pPrior;
 	_UserOnlineNode *pNext;
-}UerOnlienNode, *PUserOnlineNode;
+}UserOnlineNode, *PUserOnlineNode;
 
 extern PUserDataNode g_pUserDataBegin;
 extern PUserDataNode g_pUserDataEnd;
@@ -38,3 +40,5 @@ int CloseConfig();
 void Encrpty(char *pSource, char *pDestination);
 
 void Decrypt(char *pSource, char *pDestination);
+
+#endif

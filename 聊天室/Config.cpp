@@ -58,7 +58,7 @@ int ReadConfig()
 	int nRet = SUCCESS;
 	FILE *file;
 	PUserDataNode pNode;
-	PUserDataNode pTemp;
+	PUserData pUserData;
 	char buf[FILE_BUFLEN];
 	char nameBuf[USER_PWD_LEN];
 	char ciphertext[USER_PWD_LEN];  // 密文
@@ -70,7 +70,8 @@ int ReadConfig()
 		return ERROR_OTHER;
 	}
 	g_pUserDataBegin = (PUserDataNode)malloc(sizeof(UserDataNode));
-	if (g_pUserDataBegin == NULL)
+	pUserData = (PUserData)malloc(sizeof(UserData));
+	if (g_pUserDataBegin == NULL && pUserData == NULL)
 	{
 		printf("Malloc failed!");
 		return ERROR_MALLOC;
@@ -80,9 +81,10 @@ int ReadConfig()
 	{
 		GetUserAttr(buf, nameBuf, ciphertext, &level);
 		Decrypt(ciphertext, plaintext);  // 密文转换为明文
-		strcpy_s(g_pUserDataBegin->userName, USER_NAME_LEN, nameBuf);
-		strcpy_s(g_pUserDataBegin->userPwd, USER_PWD_LEN, plaintext);
-		g_pUserDataBegin->userLevel = level;
+		g_pUserDataBegin->userData = pUserData;
+		strcpy_s(g_pUserDataBegin->userData->userName, USER_NAME_LEN, nameBuf);
+		strcpy_s(g_pUserDataBegin->userData->userPwd, USER_PWD_LEN, plaintext);
+		g_pUserDataBegin->userData->userLevel = level;
 		g_pUserDataBegin->pNext = NULL;
 	}
 
@@ -90,7 +92,8 @@ int ReadConfig()
 	while (fgets(buf, FILE_BUFLEN, file) != NULL)
 	{
 		pNode->pNext = (PUserDataNode)malloc(sizeof(UserDataNode));
-		if (pNode->pNext == NULL)
+		pUserData = (PUserData)malloc(sizeof(UserData));
+		if (pNode->pNext == NULL && pUserData == NULL)
 		{
 			printf("Malloc failed!");
 			nRet = ERROR_OTHER;
@@ -100,9 +103,10 @@ int ReadConfig()
 
 		GetUserAttr(buf, nameBuf, ciphertext, &level);
 		Decrypt(ciphertext, plaintext);
-		strcpy_s(pNode->userName, USER_NAME_LEN, nameBuf);
-		strcpy_s(pNode->userPwd, USER_PWD_LEN, plaintext);
-		pNode->userLevel = level;
+		pNode->userData = pUserData;
+		strcpy_s(pNode->userData->userName, USER_NAME_LEN, nameBuf);
+		strcpy_s(pNode->userData->userPwd, USER_PWD_LEN, plaintext);
+		pNode->userData->userLevel = level;
 		pNode->pNext = NULL;
 	}
 	g_pUserDataEnd = pNode;
@@ -114,7 +118,7 @@ int ReadConfig()
 int InitConfig()
 {
 	int nRet = SUCCESS;
-
+	PUserData pUserData;
 	if (_access(CONFIG_FILE, 0) != -1) // 配置文件存在
 	{
 		nRet = ReadConfig();
@@ -123,16 +127,18 @@ int InitConfig()
 	{
 		// 生成超级管理员并保存
 		g_pUserDataBegin = (PUserDataNode)malloc(sizeof(UserDataNode));
-		if (g_pUserDataBegin == NULL)
+		pUserData = (PUserData)malloc(sizeof(UserData));
+		if (g_pUserDataBegin == NULL || pUserData == NULL)
 		{
 			printf("Malloc failed!");
 			nRet = ERROR_MALLOC;
 		}
 		else
 		{
-			strcpy_s(g_pUserDataBegin->userName, USER_NAME_LEN, "SuperAdmin");
-			strcpy_s(g_pUserDataBegin->userPwd, USER_PWD_LEN, "123456");
-			g_pUserDataBegin->userLevel = LEVEL_SUPER_ADMIN;
+			g_pUserDataBegin->userData = pUserData;
+			strcpy_s(g_pUserDataBegin->userData->userName, USER_NAME_LEN, "SuperAdmin");
+			strcpy_s(g_pUserDataBegin->userData->userPwd, USER_PWD_LEN, "123456");
+			g_pUserDataBegin->userData->userLevel = LEVEL_SUPER_ADMIN;
 			g_pUserDataBegin->pNext = NULL;
 			nRet = SaveConfig();
 		}
@@ -154,9 +160,9 @@ int SaveConfig()
 
 	while (pNode)
 	{
-		Encrpty(pNode->userPwd, ciphertext);//加密
-		sprintf_s(buf, FILE_BUFLEN, "<%s> <%s> <%d>\n", pNode->userName,
-					ciphertext, pNode->userLevel);
+		Encrpty(pNode->userData->userPwd, ciphertext);//加密
+		sprintf_s(buf, FILE_BUFLEN, "<%s> <%s> <%d>\n", pNode->userData->userName,
+			ciphertext, pNode->userData->userLevel);
 		fwrite(buf, sizeof(char), strlen(buf), file);
 		pNode = pNode->pNext;
 	}
@@ -173,6 +179,7 @@ int CloseConfig()
 	{
 		temp = g_pUserDataBegin;
 		g_pUserDataBegin = g_pUserDataBegin->pNext;
+		free(temp->userData);
 		free(temp);
 		temp = NULL;
 	}

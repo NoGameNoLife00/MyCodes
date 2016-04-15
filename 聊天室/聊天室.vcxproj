@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClInclude Include="..\inc\BaseData.h" />
     <ClInclude Include="Config.h" />
-    <ClInclude Include="ServerControl.h" />
     <ClInclude Include="ServerAdminManage.h" />
     <ClInclude Include="ServerMassage.h" />
     <ClInclude Include="ServerNotice.h" />
@@ -24,8 +23,8 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="ServerAdminManage.cpp" />
-    <ClCompile Include="ServerControl.cpp" />
-    <ClCompile Include="ServerManage.cpp" />
+    <ClCompile Include="ServerMassage.cpp" />
+    <ClCompile Include="ServerNotice.cpp" />
     <ClCompile Include="ServerUserManage.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -37,13 +36,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

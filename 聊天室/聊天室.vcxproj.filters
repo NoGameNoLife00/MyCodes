@@ -30,9 +30,6 @@
     <ClInclude Include="ServerMassage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ServerControl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\BaseData.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -41,23 +38,23 @@
     <ClCompile Include="server.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ServerManage.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Config.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ServerAdminManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ServerControl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ServerUserManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\inc\BaseData.cpp">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerMassage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerNotice.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

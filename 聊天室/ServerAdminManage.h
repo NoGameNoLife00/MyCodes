@@ -1,6 +1,6 @@
 #include "Config.h"
 
 // 管理员模块
-int SetUserOffLine(PUserOnlineNode pUserOnlienNode);
+int SetUserOffLine(PUserOnlineNode pCurrUser);
 
 int SetUserLevel(PUserOnlineNode pUserOnlienNode);

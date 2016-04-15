@@ -27,15 +27,27 @@
     <ClInclude Include="ClientMassage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ClientControl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\BaseData.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseData.cpp">
+    <ClCompile Include="client.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inc\BaseData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientUserManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientMassage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientNotice.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientAdminManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,9 +8,12 @@
 #include <stdlib.h>
 #include <process.h>
 #include "Config.h"
+#include "ServerUserManage.h"
+#include "ServerMassage.h"
+#include "ServerNotice.h"
+#include "ServerAdminManage.h"
 
 #define MAX_THREAD_COUNTS 20 
-#define DEFAULT_PORT 27015
 
 PUserDataNode g_pUserDataBegin;
 PUserDataNode g_pUserDataEnd;
@@ -52,11 +55,19 @@ int InitListenSocket(SOCKET *pListenSocket)
 unsigned __stdcall ClientThread(void *pSocket)
 {
 	int nRet = 0;
-	long userCounts;
+	DataHead head;
 	sockaddr_in currAddr;
+	bool isLogin = false;
 	SOCKET clientSocket = INVALID_SOCKET;
 	SOCKET *pListenSocket = (SOCKET*)pSocket;
+	PUserOnlineNode currOnlineUser = NULL;
 	int addrLen = sizeof(currAddr);
+	currOnlineUser = (PUserOnlineNode)malloc(sizeof(UserOnlineNode));
+	if (currOnlineUser == NULL)
+	{
+		printf("Malloc failed!\n");
+		return ERROR_MALLOC;
+	}
 
 	while (!g_isExit)
 	{
@@ -64,7 +75,6 @@ unsigned __stdcall ClientThread(void *pSocket)
 		WaitForSingleObject(g_hMutex, INFINITE);
 		clientSocket = accept(*pListenSocket, (sockaddr *)&currAddr, &addrLen);
 		ReleaseMutex(g_hMutex);
-
 		if (clientSocket == INVALID_SOCKET)
 		{
 			printf("accept failed: %d\n", GetLastError());
@@ -72,9 +82,78 @@ unsigned __stdcall ClientThread(void *pSocket)
 			continue;
 		}
 
+		while (!g_isExit && nRet == SUCCESS)
+		{
+			nRet = RecvHead(clientSocket, &head);
+			if (nRet != SUCCESS)
+			{
+				break;
+			}
 
+			if (!isLogin) // 用户未登陆
+			{
+				switch (head.cmd)
+				{
+					case CMD_REGIEST:
+						nRet = Register(clientSocket);
+						break;
+					case CMD_LOGIN:
+						nRet = Login(clientSocket, currOnlineUser, &isLogin);
+						break;
+					default:
+						nRet = ERROR_OTHER;
+						break;
+				}
+			}
+			else         // 用户已登陆
+			{
+				switch (head.cmd)
+				{
+				case CMD_LOGOUT:
+					nRet = Logout(&clientSocket, currOnlineUser, &isLogin);
+					break;
+				case CMD_GROUPCHAT:
+					nRet = GroupMassage(currOnlineUser, &head);
+					break;
+				case CMD_PRIVATECHAT:
+					nRet = PrivateMassage(currOnlineUser, &head);
+					break;
+				case CMD_SET_USER_NAME:
+					nRet = SetUserName(currOnlineUser);
+					break;
+				case  CMD_SET_USER_PWD:
+					nRet = SetUserPwd(currOnlineUser);
+					break;
+				case CMD_GET_ALL_USER:
+					nRet = SendAllUserList(currOnlineUser);
+					break;
+				case CMD_GET_ONLINE_USER:
+					nRet = SendOnlineUserList(currOnlineUser);
+					break;
+				case CMD_GET_CURRENT_USER:
+					nRet = SendCurrentUser(currOnlineUser);
+					break;
+				case CMD_SET_USER_OFFLINE:
+					nRet = SetUserOffLine(currOnlineUser);
+					break;
+				case CMD_SET_USER_LEVEL:
+					nRet = SetUserLevel(currOnlineUser);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		// 发送异常，用户退出登陆
+		if (nRet != SUCCESS)
+		{
+			Logout(&clientSocket, currOnlineUser, &isLogin);
+		}
+		closesocket(clientSocket);
 	}
 
+	free(currOnlineUser);
+	currOnlineUser = NULL;
 	return nRet;
 }
 
@@ -116,7 +195,7 @@ int main()
 			aThread[i] = (HANDLE)_beginthreadex(NULL, 0, &ClientThread, (void*)&listeningSocket, 0, NULL);
 		}
 
-		printf("服务启动成功，退出请输入（E）: ");
+		printf("服务启动成功，退出请输入（E）: \n");
 		while ((ch = getchar()) != NULL)
 		{
 			ch = tolower(ch);
@@ -127,7 +206,7 @@ int main()
 			}
 		}
 
-		WaitForMultipleObjects(MAX_THREAD_COUNTS, aThread, true, INFINITE);
+		WaitForMultipleObjects(MAX_THREAD_COUNTS, aThread, true, 500);
 		for (int i = 0; i < MAX_THREAD_COUNTS; i++)
 		{
 			CloseHandle(aThread[i]);
