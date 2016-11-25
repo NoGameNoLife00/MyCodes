@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/mvc    
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!-- 配置扫描的包 -->
+    <context:component-scan base-package="com.test.*" />
+    
+    <!-- 注册HandlerMapper、HandlerAdapter两个映射类 -->
+    <mvc:annotation-driven>
+		<mvc:argument-resolvers>
+			<bean class="com.test.authorization.resolver.CurrentUserMethodArgumentResolver"/>
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+
+	<!-- 拦截权限验证 -->
+	<!-- 拦截是带路径信息的拦截，即在mvc:interceptors下单独声明interceptor并加上mvc:mapping，bean参数，这样可以避免
+	资源、脚本等被拦截从而导致页面验证失败-->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 被拦截的路径 -->
+			<mvc:mapping path="/api/**"/>
+			<!-- 不被拦截的路径 -->
+			<mvc:exclude-mapping path = "/resources/**" />
+			<mvc:exclude-mapping path = "/static/**"/>
+			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+			<bean class="com.test.authorization.interceptor.AuthorizationInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+
+	<mvc:resources mapping="/static/**" location="/static/"/>
+	<mvc:resources mapping="/resource/**" location="/resource/"/>
+
+    <!-- 视图解析器 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	</bean>
+
+</beans >   

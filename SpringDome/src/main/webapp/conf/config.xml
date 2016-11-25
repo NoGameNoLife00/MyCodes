@@ -1,0 +1,8 @@
+<config>
+    <Users>
+        <User>
+            <name>admin</name>
+            <password>admin</password>
+        </User>
+    </Users>
+</config>
