@@ -8,4 +8,4 @@ C++多线程聊天室：一个用socket实现的控制台版win32平台的多线
 
 Java 简单文件浏览器： java 写的一个文件浏览器
 
-SpringDome： 一个基于SpringMVC的前后端分离的例子项目 功能：使用Token鉴权实现的登录登出功能
+SpringDemo： 一个基于SpringMVC的前后端分离的例子项目 功能：使用Token鉴权实现的登录登出功能

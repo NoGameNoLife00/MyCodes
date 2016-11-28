@@ -21,7 +21,7 @@ $(
             dataType : 'json',
             complete : function(XHR, TS) {
                 if (TS == "success") {
-                    var ar = XHR.responseJSON;
+                    var ar = JSON.parse(XHR.responseText);
                     if (ar.code == 100) {
                         // ´æ´¢token
                         //setCookie("token", ar.data.username + "_" + ar.data.token, 1);

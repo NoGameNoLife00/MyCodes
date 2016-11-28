@@ -5,7 +5,7 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          metadata-complete="true"
          version="3.1">
-    <display-name>SpringDome</display-name>
+    <display-name>SpringDemo</display-name>
 
     <!--Log4j 日志配置-->
     <context-param>

@@ -116,7 +116,7 @@
 
 
   <build>
-    <finalName>SpringDome</finalName>
+    <finalName>SpringDemo</finalName>
     <plugins>  
         <!-- define the project compile level -->  
         <plugin>  

@@ -13,7 +13,7 @@ $(
                 headers : {"authorization": token},
                 complete : function(XHR, TS) {
                     if (TS == "success") {
-                        var ar = XHR.responseJSON;
+                        var ar = JSON.parse(XHR.responseText);
                         if (ar.code == 100) {
                         } else {
                             alert(ar.message);
