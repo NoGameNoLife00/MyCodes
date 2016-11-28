@@ -44,7 +44,7 @@
         if (url && url.length > 1) {
             url = decodeURIComponent(url[1]);
         } else {
-            url = "http://" + window.location.host + "/SpringDome/api-docs";
+            url = "http://" + window.location.host + "/SpringDemo/api-docs";
         }
         window.swaggerUi = new SwaggerUi({
             url: url,
