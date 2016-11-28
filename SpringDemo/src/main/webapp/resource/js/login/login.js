@@ -1,4 +1,3 @@
-var baseUrl = "http://" + window.location.host + "/";
 $(
     function() {
     $('input').keyup(function (event) {
@@ -14,7 +13,7 @@ $(
             password : $("#password").val()
         };
         $.ajax({
-            url : baseUrl + 'api/user/login',
+            url : 'api/user/login',
             type : 'POST',
             contentType : 'application/json',
             data : JSON.stringify(param),
@@ -26,7 +25,7 @@ $(
                         // ´æ´¢token
                         //setCookie("token", ar.data.username + "_" + ar.data.token, 1);
                         $.cookie("token", ar.data.username + "_" + ar.data.token, {expires: 1, path: "/"});
-                        window.location.href= baseUrl + "jsp/index.jsp";
+                        window.location.href = baseUrl + "jsp/index.jsp";
                     } else {
                         alert(ar.message);
                     }

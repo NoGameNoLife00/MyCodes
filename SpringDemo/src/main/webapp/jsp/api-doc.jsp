@@ -1,27 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="GB2312"%>
+<%@ include file="config/config.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <base href="<%=basePath%>">
     <title>Swagger UI</title>
-    <link rel="icon" type="image/png" href="../static/images/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="../static/images/favicon-16x16.png" sizes="16x16" />
-    <link href='../static/css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
-    <link href='../static/css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
-    <link href='../static/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
-    <link href='../static/css/reset.css' media='print' rel='stylesheet' type='text/css'/>
-    <link href='../static/css/print.css' media='print' rel='stylesheet' type='text/css'/>
-    <script src='../static/js/jquery-1.8.0.min.js' type='text/javascript'></script>
-    <script src='../static/js/jquery.slideto.min.js' type='text/javascript'></script>
-    <script src='../static/js/jquery.wiggle.min.js' type='text/javascript'></script>
-    <script src='../static/js/jquery.ba-bbq.min.js' type='text/javascript'></script>
-    <script src='../static/js/handlebars-2.0.0.js' type='text/javascript'></script>
-    <script src='../static/js/underscore-min.js' type='text/javascript'></script>
-    <script src='../static/js/backbone-min.js' type='text/javascript'></script>
-    <script src='../static/js/swagger-ui.js' type='text/javascript'></script>
-    <script src='../static/js/highlight.7.3.pack.js' type='text/javascript'></script>
-    <script src='../static/js/marked.js' type='text/javascript'></script>
-    <script src='../resources/js/swagger-oauth.js' type='text/javascript'></script>
+    <link rel="icon" type="image/png" href="static/images/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="static/images/favicon-16x16.png" sizes="16x16" />
+    <link href='static/css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
+    <link href='static/css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
+    <link href='static/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+    <link href='static/css/reset.css' media='print' rel='stylesheet' type='text/css'/>
+    <link href='static/css/print.css' media='print' rel='stylesheet' type='text/css'/>
+    <script src='static/js/jquery-1.8.0.min.js' type='text/javascript'></script>
+    <script src='static/js/jquery.slideto.min.js' type='text/javascript'></script>
+    <script src='static/js/jquery.wiggle.min.js' type='text/javascript'></script>
+    <script src='static/js/jquery.ba-bbq.min.js' type='text/javascript'></script>
+    <script src='static/js/handlebars-2.0.0.js' type='text/javascript'></script>
+    <script src='static/js/underscore-min.js' type='text/javascript'></script>
+    <script src='static/js/backbone-min.js' type='text/javascript'></script>
+    <script src='static/js/swagger-ui.js' type='text/javascript'></script>
+    <script src='static/js/highlight.7.3.pack.js' type='text/javascript'></script>
+    <script src='static/js/marked.js' type='text/javascript'></script>
+    <script src='static/js/swagger-oauth.js' type='text/javascript'></script>
 </head>
 <body class="swagger-section">
 <div id='header'>
@@ -44,7 +46,7 @@
         if (url && url.length > 1) {
             url = decodeURIComponent(url[1]);
         } else {
-            url = "http://" + window.location.host + "/SpringDemo/api-docs";
+            url = "<%=basePath%>" + "api-docs";
         }
         window.swaggerUi = new SwaggerUi({
             url: url,

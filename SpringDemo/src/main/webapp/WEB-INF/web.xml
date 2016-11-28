@@ -22,7 +22,6 @@
         <param-value>web.root</param-value>
     </context-param>
 
-
 	<!-- Spring监听 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
