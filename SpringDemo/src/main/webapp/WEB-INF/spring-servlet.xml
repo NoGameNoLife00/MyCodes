@@ -36,7 +36,7 @@
 	</mvc:interceptors>
 
 
-    <mvc:default-servlet-handler/>
+    <!--<mvc:default-servlet-handler/>-->
 
 	<mvc:resources mapping="/static/**" location="/static/"/>
 	<mvc:resources mapping="/resource/**" location="/resource/"/>
